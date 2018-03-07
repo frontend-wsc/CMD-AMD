@@ -115,7 +115,16 @@ define(function(require, exports, module) {
       * id：指定义中模块的名字，可选；如果没有提供该参数，模块的名字应该默认为模块加载器请求的指定脚本的名字。如果提供了该参数，模块名必须是“顶级”的和绝对的（不允许相对名字）。
       * 依赖dependencies：是一个当前模块依赖的，已被模块定义的模块标识的数组字面量。依赖参数是可选的，如果忽略此参数，它应该默认为["require", "exports", "module"]。然而，如果工厂方法的长度属性小于3，加载器会选择以函数的长度属性指定的参数个数调用工厂方法。
       * 工厂方法factory，模块初始化要执行的函数或对象。如果为函数，它应该只被执行一次。如果是对象，此对象应该为模块的输出值。
-
+	举个例子看看
+    ```javascript
+		define('alpha',['require','exports','beta'],function(require,exports,beta){
+        	exports.veba = function(){
+            	return beta.verb()
+              	//Or:
+          		//return require("beta").verb();
+            }
+        })
+    ```
 	```javascript
     	math.js
     	define('math',['jquery'],function($){
@@ -146,7 +155,44 @@ define(function(require, exports, module) {
     * require是可以把其他模块导入进来的一个参数;
     * exports是可以把模块内的一些属性和方法导出的;
     * module 是一个对象，上面存储了与当前模块相关联的一些属性和方法。
+    
+##AMD和CMD区别
+* AMD是依赖关系前置,在定义模块的时候就要声明其依赖的模块;
+* CMD是按需加载依赖就近,只有在用到某个模块的时候再去require：
+ ```javascript
+	/ CMD 写法
+    define(function(require, exports, module) {
+      var a = require('./a')
+      a.doSomething()
+      // 此处略去 100 行
+      var b = require('./b') // 依赖可以就近书写
+      b.doSomething()
+      // ... 
+    })
 
+    // AMD 默认推荐的是  
+    define(['./a', './b'], function(a, b) { // 依赖必须一开始就写好
+      a.doSomething()
+      // 此处略去 100 行
+      b.doSomething()
+      ...
+    })
+ ```
+ # seajs使用例子
+ 	
+```javascript
+	//定义模块
+	define(function(require,exports,module){
+		var $ = require('jquery')
+        $('div').addClass('active')
+        exports.data = 1
+    })
+	// 加载模块
+	seajs.ues(['mymodule'],function(my){
+		console.log(my.data) //1
+    })
+	
+ ```
 
 
 
