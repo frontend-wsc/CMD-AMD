@@ -100,7 +100,7 @@ define(function(require, exports, module) {
 	```javascript
     require([module], callback);
 
-    require([increment'], function (increment) {
+    require(['increment'], function (increment) {
         increment.add(1);
     });
     
