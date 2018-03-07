@@ -52,7 +52,7 @@ CMD:延迟执行（运行到需加载，根据顺序执行）
 ```
 	define(function(require, exports, module) {
 
-      ##The module code goes here
+      //The module code goes here
 
     });
 	
