@@ -126,10 +126,11 @@ define(function(require, exports, module) {
             }
         })
     ```
-     * 将该模块命名为math.js保存。
+      * 将该模块命名为math.js保存。
       
       ```javascript
-      	require(['jquery,math'],function($,math){
+      	main.js
+      	require(['jquery','math'],function($,math){
         	console.log(math.add(10,100)) //110
         })
       
