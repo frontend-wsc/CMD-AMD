@@ -58,7 +58,34 @@ CMD:延迟执行（运行到需加载，根据顺序执行）
 	
 ```
 这套模板代码为模块加载器提供了机会，使其能在模块代码执行之前，对模块代码进行静态分析，并动态生成依赖列表。
+```
+	math.js
+define(function(require, exports, module) {
+  exports.add = function() {
+    var sum = 0, i = 0, args = arguments, l = args.length;
+    while (i < l) {
+      sum += args[i++];
+    }
+    return sum;
+  };
+});
 
+increment.js
+define(function(require, exports, module) {
+  var add = require('math').add;
+  exports.increment = function(val) {
+    return add(val, 1);
+  };
+});
+
+index.js
+define(function(require, exports, module) {
+  var inc = require('increment').increment;
+  inc(1); // 2
+});
+
+
+```
 
 ##捐助开发者
 在兴趣的驱动下,写一个`免费`的东西，有欣喜，也还有汗水，希望你喜欢我的作品，同时也能支持一下。
