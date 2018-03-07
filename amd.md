@@ -136,6 +136,15 @@ define(function(require, exports, module) {
       ```
       * main.js引入模块方法
 
+##CMD规范
+ * CMD 即Common Module Definition通用模块定义，CMD规范是国内发展出来的，就像AMD有个requireJS，CMD有个浏览器的实现SeaJS，SeaJS要解决的问题和requireJS一样，只不过在模块定义方式和模块加载（可以说运行、解析）时机上有所不同。
+* 在 CMD 规范中，一个模块就是一个文件。代码的书写格式如下:
+	```
+    	define(function(require,exports,module){
+        	// 模块代码
+        })
+    ```
+
 
 
 
