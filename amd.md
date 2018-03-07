@@ -87,22 +87,56 @@ define(function(require, exports, module) {
 
 ```
 
-##捐助开发者
-在兴趣的驱动下,写一个`免费`的东西，有欣喜，也还有汗水，希望你喜欢我的作品，同时也能支持一下。
-当然，有钱捧个钱场（右上角的爱心标志，支持支付宝和PayPal捐助），没钱捧个人场，谢谢各位。
+##AMD规范
+* AMD是"Asynchronous Module Definition"的缩写，意思就是"异步模块定义"。由于不是JavaScript原生支持，使用AMD规范进行页面开发需要用到对应的库函数，也就是大名鼎鼎RequireJS，实际上AMD 是 RequireJS 在推广过程中对模块定义的规范化的产出
+* 它采用异步方式加载模块，模块的加载不影响它后面语句的运行。所有依赖这个模块的语句，都定义在一个回调函数中，等到加载完成之后，这个回调函数才会运行。
+* RequireJS主要解决两个问题
+	* 多个js文件可能有依赖关系，被依赖的文件需要早于依赖它的文件加载到浏览器
+    * js加载的时候浏览器会停止页面渲染，加载文件越多，页面失去响应时间越长
+* RequireJs也采用require()语句加载模块，但是不同于CommonJS，它要求两个参数:
+	* 第一个参数[module]，是一个数组，里面的成员就是要加载的模块；
+    * 第二个参数callback，则是加载成功之后的回调函数。math.add()与math模块加载不是同步的，浏览器不会发生假死。
+    
+	```
+    require([module], callback);
 
-##感激
-感谢以下的项目,排名不分先后
+    require([increment'], function (increment) {
+        increment.add(1);
+    });
+    
+    ``` 
+    ##define函数   
+     * RequireJS定义了一个函数 define，它是全局变量，用来定义模块:
+	```
+    	define(id?, dependencies?, factory);
+    ```
+	* 参数说明：
 
-* [mou](http://mouapp.com/) 
-* [ace](http://ace.ajax.org/)
-* [jquery](http://jquery.com)
+      * id：指定义中模块的名字，可选；如果没有提供该参数，模块的名字应该默认为模块加载器请求的指定脚本的名字。如果提供了该参数，模块名必须是“顶级”的和绝对的（不允许相对名字）。
+      * 依赖dependencies：是一个当前模块依赖的，已被模块定义的模块标识的数组字面量。依赖参数是可选的，如果忽略此参数，它应该默认为["require", "exports", "module"]。然而，如果工厂方法的长度属性小于3，加载器会选择以函数的长度属性指定的参数个数调用工厂方法。
+      * 工厂方法factory，模块初始化要执行的函数或对象。如果为函数，它应该只被执行一次。如果是对象，此对象应该为模块的输出值。
 
-##关于作者
+	```
+    	math.js
+    	define('math',['jquery'],function($){
+        	return {
+            	add:function(x,y){
+                	return x + y
+                }
+            }
+        })
+    ```
+      * 将该模块命名为math.js保存。
+      
+      ```
+      	require(['jquery,math'],function($,math){
+        	console.log(math.add(10,100)) //110
+        })
+      
+      ```
+      * main.js引入模块方法
 
-```javascript
-  var ihubo = {
-    nickName  : "草依山",
-    site : "http://jser.me"
-  }
-```
+
+
+
+
