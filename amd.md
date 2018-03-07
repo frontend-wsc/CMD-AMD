@@ -52,12 +52,12 @@ CMD:延迟执行（运行到需加载，根据顺序执行）
 ```
 	define(function(require, exports, module) {
 
-      //The module code goes here
+       // The module code goes here
 
     });
 	
 ```
-
+这套模板代码为模块加载器提供了机会，使其能在模块代码执行之前，对模块代码进行静态分析，并动态生成依赖列表。
 
 
 ##捐助开发者
