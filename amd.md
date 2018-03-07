@@ -127,14 +127,13 @@ define(function(require, exports, module) {
         })
     ```
        将该模块命名为math.js保存。
-      
-      ```javascript
-      	main.js
+    ```javascript
+    	main.js
       	require(['jquery','math'],function($,math){
         	console.log(math.add(10,100)) //110
         })
-      ```
-      main.js引入模块方法
+    ```
+       将该模块命名为main.js保存。 
 
 ##CMD规范
  * CMD 即Common Module Definition通用模块定义，CMD规范是国内发展出来的，就像AMD有个requireJS，CMD有个浏览器的实现SeaJS，SeaJS要解决的问题和requireJS一样，只不过在模块定义方式和模块加载（可以说运行、解析）时机上有所不同。
