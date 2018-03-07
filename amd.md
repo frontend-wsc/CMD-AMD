@@ -40,16 +40,16 @@ CMD:延迟执行（运行到需加载，根据顺序执行）
   * 一个单独的文件就是一个模块。每一个模块都是一个单独的作用域，也就是说，在该模块内部定义的变量，无法被其他模块读取，	 除非定义为global对象的属性。
   * 输出模块变量的最好方法是使用module.exports对象。
   * 加载模块使用require方法，该方法读取一个文件并执行，返回文件内部的module.exports对象
-仔细看上面的代码，您会注意到 require 是同步的。模块系统需要同步读取模块文件内容，并编译执行以得到模块接口。
-然而， 这在浏览器端问题多多。
+  仔细看上面的代码，您会注意到 require 是同步的。模块系统需要同步读取模块文件内容，并编译执行以得到模块接口。
+  然而， 这在浏览器端问题多多。
 
-浏览器端，加载 JavaScript 最佳、最容易的方式是在 document 中插入<script>标签。但脚本标签天生异步，传统 CommonJS 模块在浏览器环境中无法正常加载。
+  浏览器端，加载 JavaScript 最佳、最容易的方式是在 document 中插入<script>标签。但脚本标签天生异步，传统 	  	CommonJS 模块在浏览器环境中无法正常加载。
 
-解决思路之一是，开发一个服务器端组件，对模块代码作静态分析，将模块与它的依赖列表一起返回给浏览器端。 这很好使，但需要服务器安装额外的组件，并因此要调整一系列底层架构。
+  解决思路之一是，开发一个服务器端组件，对模块代码作静态分析，将模块与它的依赖列表一起返回给浏览器端。 这很好使，但需要服务器安装额外的组件，并因此要调整一系列底层架构。
 
-另一种解决思路是，用一套标准模板来封装模块定义：
+  另一种解决思路是，用一套标准模板来封装模块定义：
 
-```
+```javascript
 	define(function(require, exports, module) {
 
        // The module code goes here
@@ -58,7 +58,7 @@ CMD:延迟执行（运行到需加载，根据顺序执行）
 	
 ```
 这套模板代码为模块加载器提供了机会，使其能在模块代码执行之前，对模块代码进行静态分析，并动态生成依赖列表。
-```
+```javascript
 	math.js
 define(function(require, exports, module) {
   exports.add = function() {
@@ -97,7 +97,7 @@ define(function(require, exports, module) {
 	* 第一个参数[module]，是一个数组，里面的成员就是要加载的模块；
     * 第二个参数callback，则是加载成功之后的回调函数。math.add()与math模块加载不是同步的，浏览器不会发生假死。
     
-	```
+	```javascript
     require([module], callback);
 
     require([increment'], function (increment) {
@@ -107,7 +107,7 @@ define(function(require, exports, module) {
     ``` 
     ##define函数   
      * RequireJS定义了一个函数 define，它是全局变量，用来定义模块:
-	```
+	```javascript
     	define(id?, dependencies?, factory);
     ```
 	* 参数说明：
@@ -116,7 +116,7 @@ define(function(require, exports, module) {
       * 依赖dependencies：是一个当前模块依赖的，已被模块定义的模块标识的数组字面量。依赖参数是可选的，如果忽略此参数，它应该默认为["require", "exports", "module"]。然而，如果工厂方法的长度属性小于3，加载器会选择以函数的长度属性指定的参数个数调用工厂方法。
       * 工厂方法factory，模块初始化要执行的函数或对象。如果为函数，它应该只被执行一次。如果是对象，此对象应该为模块的输出值。
 
-	```
+	```javascript
     	math.js
     	define('math',['jquery'],function($){
         	return {
@@ -128,7 +128,7 @@ define(function(require, exports, module) {
     ```
       * 将该模块命名为math.js保存。
       
-      ```
+      ```javascript
       	require(['jquery,math'],function($,math){
         	console.log(math.add(10,100)) //110
         })
@@ -139,11 +139,14 @@ define(function(require, exports, module) {
 ##CMD规范
  * CMD 即Common Module Definition通用模块定义，CMD规范是国内发展出来的，就像AMD有个requireJS，CMD有个浏览器的实现SeaJS，SeaJS要解决的问题和requireJS一样，只不过在模块定义方式和模块加载（可以说运行、解析）时机上有所不同。
 * 在 CMD 规范中，一个模块就是一个文件。代码的书写格式如下:
-	```
+	```javascript
     	define(function(require,exports,module){
         	// 模块代码
         })
     ```
+    * require是可以把其他模块导入进来的一个参数;
+    * exports是可以把模块内的一些属性和方法导出的;
+    * module 是一个对象，上面存储了与当前模块相关联的一些属性和方法。
 
 
 
