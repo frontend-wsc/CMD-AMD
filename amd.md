@@ -1,29 +1,64 @@
-![mahua](mahua-logo.jpg)
-##MaHua是什么?
-一个在线编辑markdown文档的编辑器
 
-向Mac下优秀的markdown编辑器mou致敬
+##前端模块规范有三种：CommonJs,AMD和CMD
+CommonJs用在服务器端，AMD和CMD用在浏览器环境
 
-##MaHua有哪些功能？
+AMD 是 RequireJS 在推广过程中对模块定义的规范化产出。
 
-* 方便的`导入导出`功能
-    *  直接把一个markdown的文本文件拖放到当前这个页面就可以了
-    *  导出为一个html格式的文件，样式一点也不会丢失
-* 编辑和预览`同步滚动`，所见即所得（右上角设置）
-* `VIM快捷键`支持，方便vim党们快速的操作 （右上角设置）
-* 强大的`自定义CSS`功能，方便定制自己的展示
-* 有数量也有质量的`主题`,编辑器和预览区域
-* 完美兼容`Github`的markdown语法
-* 预览区域`代码高亮`
-* 所有选项自动记忆
+CMD 是 SeaJS 在推广过程中对模块定义的规范化产出。
 
-##有问题反馈
-在使用中有任何问题，欢迎反馈给我，可以用以下联系方式跟我交流
+AMD:提前执行（异步加载：依赖先执行）+延迟执行
 
-* 邮件(dev.hubo#gmail.com, 把#换成@)
-* QQ: 287759234
-* weibo: [@草依山](http://weibo.com/ihubo)
-* twitter: [@ihubo](http://twitter.com/ihubo)
+CMD:延迟执行（运行到需加载，根据顺序执行）
+
+作者：frontend-wsc
+
+
+##CommonJS规范
+
+* CommonJS是服务器端模块的规范，由Node推广使用。由于服务端编程的复杂性，如果没有模块很难与操作系统及其他应用程序互动。使用方法如下：
+```javascript
+  math.js
+  exports.add = function() {
+      var sum = 0, i = 0, args = arguments, l = args.length;
+      while (i < l) {
+        sum += args[i++];
+      }
+      return sum;
+  };
+
+  increment.js
+  var add = require('math').add;
+  exports.increment = function(val) {
+      return add(val, 1);
+  };
+
+  index.js
+  var increment = require('increment').increment;
+  var a = increment(1); //2
+```
+* 根据CommonJS规范:
+  * 一个单独的文件就是一个模块。每一个模块都是一个单独的作用域，也就是说，在该模块内部定义的变量，无法被其他模块读取，	 除非定义为global对象的属性。
+  * 输出模块变量的最好方法是使用module.exports对象。
+  * 加载模块使用require方法，该方法读取一个文件并执行，返回文件内部的module.exports对象
+仔细看上面的代码，您会注意到 require 是同步的。模块系统需要同步读取模块文件内容，并编译执行以得到模块接口。
+然而， 这在浏览器端问题多多。
+
+浏览器端，加载 JavaScript 最佳、最容易的方式是在 document 中插入<script>标签。但脚本标签天生异步，传统 CommonJS 模块在浏览器环境中无法正常加载。
+
+解决思路之一是，开发一个服务器端组件，对模块代码作静态分析，将模块与它的依赖列表一起返回给浏览器端。 这很好使，但需要服务器安装额外的组件，并因此要调整一系列底层架构。
+
+另一种解决思路是，用一套标准模板来封装模块定义：
+
+```
+	define(function(require, exports, module) {
+
+      ##The module code goes here
+
+    });
+	
+```
+
+
 
 ##捐助开发者
 在兴趣的驱动下,写一个`免费`的东西，有欣喜，也还有汗水，希望你喜欢我的作品，同时也能支持一下。
