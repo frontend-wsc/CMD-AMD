@@ -105,8 +105,8 @@ define(function(require, exports, module) {
     });
     
     ``` 
-    ##define函数   
-     * RequireJS定义了一个函数 define，它是全局变量，用来定义模块:
+    * define函数   
+    * RequireJS定义了一个函数 define，它是全局变量，用来定义模块:
 	```javascript
     	define(id?, dependencies?, factory);
     ```
